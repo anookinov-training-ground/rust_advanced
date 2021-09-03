@@ -1,4 +1,6 @@
+#![allow(unused)]
 use std::slice;
+use std::ops::Add;
 
 fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
     // let len = slice.len();
@@ -49,6 +51,23 @@ pub trait Iterator {
 
 pub trait IteratorGeneric<T> {
     fn next(&mut self) -> Option<T>;
+}
+
+#[derive(Debug, PartialEq)]
+struct Point {
+    x: i32,
+    y: i32,
+}
+
+impl Add for Point {
+    type Output = Point;
+
+    fn add(self, other: Point) -> Point {
+        Point {
+            x: self.x + other.x,
+            y: self.y + other.y,
+        }
+    }
 }
 
 fn main() {
@@ -107,5 +126,16 @@ fn main() {
 
     unsafe {
         println!("COUNTER: {}", COUNTER);
+    }
+
+    assert_eq!(
+        Point { x: 1, y: 0 } + Point { x: 2, y: 3 },
+        Point { x: 3, y: 3 }
+    );
+
+    trait Add<Rhs=Self> {
+        type Output;
+
+        fn add(self, rhs: Rhs) -> Self::Output;
     }
 }

@@ -41,6 +41,12 @@ unsafe impl Foo for i32 {
     // method implementations go here
 }
 
+pub trait Iterator {
+    type Item;
+
+    fn next(&mut self) -> Option<Self::Item>;
+}
+
 fn main() {
     let mut num = 5;
 

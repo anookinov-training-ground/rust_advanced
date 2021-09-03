@@ -13,4 +13,12 @@ fn main() {
         println!("r1 is: {}", *r1);
         println!("r2 is: {}", *r2);
     }
+
+    unsafe fn dangerous() {}
+
+    unsafe {
+        dangerous();
+    }
+
+    // dangerous(); // can't call unsafe function outside of unsafe block
 }

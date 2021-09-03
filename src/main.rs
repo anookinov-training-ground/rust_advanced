@@ -1,6 +1,7 @@
 #![allow(unused)]
 use std::slice;
 use std::ops::Add;
+use std::fmt;
 
 fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
     // let len = slice.len();
@@ -116,6 +117,26 @@ impl Animal for Dog {
     }
 }
 
+trait OutlinePrint: fmt::Display {
+    fn outline_print(&self) {
+        let output = self.to_string();
+        let len = output.len();
+        println!("{}", "*".repeat(len + 4));
+        println!("*{}*", " ".repeat(len + 2));
+        println!("* {} *", output);;
+        println!("*{}*", " ".repeat(len + 2));
+        println!("{}", "*".repeat(len + 4));
+    }
+}
+
+impl OutlinePrint for Point {} // can't implement OutlinePrint on a type that doesn't implement Display
+
+impl fmt::Display for Point {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "({}, {})", self.x, self.y)
+    }
+}
+
 fn main() {
     let mut num = 5;
 
@@ -193,4 +214,6 @@ fn main() {
     println!("A baby dog is called a {}", Dog::baby_name());
     // println!("A baby dog is called a {}", Animal::baby_name()); // error as Rust can't figure out which implementation for Animal::baby_name we want
     println!("A baby dog is called a {}", <Dog as Animal>::baby_name()); // fully qualified syntax i.e. <Type as Trait>::function(receiver_if_method, next_arg, ...);
+
+
 }

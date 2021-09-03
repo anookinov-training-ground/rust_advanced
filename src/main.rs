@@ -23,6 +23,16 @@ extern "C" {
     fn abs(input: i32) -> i32;
 }
 
+static HELLO_WORLD: &str = "Hello, world!";
+
+static mut COUNTER: u32 = 0;
+
+fn add_to_count(inc: u32) {
+    unsafe {
+        COUNTER += inc;
+    }
+}
+
 fn main() {
     let mut num = 5;
 
@@ -71,5 +81,13 @@ fn main() {
     #[no_mangle]
     pub extern "C" fn call_from_c() {
         println!("Just called a Rust function from C!");
+    }
+
+    println!("name is: {}", HELLO_WORLD);
+
+    add_to_count(3);
+
+    unsafe {
+        println!("COUNTER: {}", COUNTER);
     }
 }

@@ -47,6 +47,10 @@ pub trait Iterator {
     fn next(&mut self) -> Option<Self::Item>;
 }
 
+pub trait IteratorGeneric<T> {
+    fn next(&mut self) -> Option<T>;
+}
+
 fn main() {
     let mut num = 5;
 

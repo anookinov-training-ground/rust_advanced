@@ -137,6 +137,14 @@ impl fmt::Display for Point {
     }
 }
 
+struct Wrapper(Vec<String>);
+
+impl fmt::Display for Wrapper {
+    fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
+        write!(f, "[{}]", self.0.join(", "))
+    }
+}
+
 fn main() {
     let mut num = 5;
 
@@ -215,5 +223,6 @@ fn main() {
     // println!("A baby dog is called a {}", Animal::baby_name()); // error as Rust can't figure out which implementation for Animal::baby_name we want
     println!("A baby dog is called a {}", <Dog as Animal>::baby_name()); // fully qualified syntax i.e. <Type as Trait>::function(receiver_if_method, next_arg, ...);
 
-
+    let w = Wrapper(vec![String::from("hello"), String::from("world")]);
+    println!("w = {}", w);
 }

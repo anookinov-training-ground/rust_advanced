@@ -33,3 +33,10 @@ impl Add<Meters> for Millimeters {
         Millimeters(self.0 + (other.0 * 1000))
     }
 }
+
+use proc_macro;
+
+#[some_attribute]
+pub fn some_name(input: TokenStream) -> TokenStream {
+    
+}

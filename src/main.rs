@@ -164,6 +164,27 @@ pub trait Write {
     fn write_fmt(&mut self, fmt: fmt::Arguments) -> Result<()>;
 }
 
+fn bar() -> ! {
+    // --snip--
+    panic!();
+}
+
+enum CustomOption<T> {
+    Some(T),
+    None,
+}
+
+use crate::CustomOption::*;
+
+impl<T> CustomOption<T> {
+    pub fn unwrap(self) -> T {
+        match self {
+            Some(val) => val,
+            None => panic!("called `Option::unwrap()` on a `None` value"),
+        }
+    }
+}
+
 fn main() {
     let mut num = 5;
 
@@ -274,5 +295,19 @@ fn main() {
     fn returns_type_alias() -> Thunk {
         // --snip--
         Box::new(|| ())
+    }
+
+    // let guess = "3";
+    // let guess = match guess.trim().parse() {
+    //     Ok(_) => 5,
+    //     Err(_) => "hello", // doesn't work as match arms must all return the same type
+    //     // Err(_) => continue, // OK as continue return ! (never type which never returns)
+    // };
+
+    print!("forever ");
+
+    // loop has ! type but wouldn't be true if break is included
+    loop {
+        print!("and ever ");
     }
 }

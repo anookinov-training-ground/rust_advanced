@@ -2,6 +2,7 @@
 use std::slice;
 use std::ops::Add;
 use std::fmt;
+use std::io::Error;
 
 fn split_at_mut(slice: &mut [i32], mid: usize) -> (&mut [i32], &mut [i32]) {
     // let len = slice.len();
@@ -145,6 +146,24 @@ impl fmt::Display for Wrapper {
     }
 }
 
+type Result<T> = std::result::Result<T, std::io::Error>;
+
+// pub trait Write {
+//     fn write(&mut self, buf: &[u8]) -> Result<usize, Error>;
+//     fn flush(&mut self) -> Result<(), Error>;
+
+//     fn write_all(&mut self, buf: &[u8]) -> Result<(), Error>;
+//     fn write_fmt(&mut self, fmt: fmt::Arguments) -> Result<(), Error>;
+// }
+
+pub trait Write {
+    fn write(&mut self, buf: &[u8]) -> Result<usize>;
+    fn flush(&mut self) -> Result<()>;
+
+    fn write_all(&mut self, buf: &[u8]) -> Result<()>;
+    fn write_fmt(&mut self, fmt: fmt::Arguments) -> Result<()>;
+}
+
 fn main() {
     let mut num = 5;
 
@@ -225,4 +244,35 @@ fn main() {
 
     let w = Wrapper(vec![String::from("hello"), String::from("world")]);
     println!("w = {}", w);
+
+    type Kilometers = i32;
+
+    let x: i32 = 5;
+    let y: Kilometers = 5;
+
+    println!("x + y = {}", x + y);
+
+    let f: Box<dyn Fn() + Send + 'static> = Box::new(|| println!("hi"));
+
+    fn takes_long_type(f: Box<dyn Fn() + Send + 'static>) {
+        // --snip--
+    }
+
+    fn returns_long_type() -> Box<dyn Fn() + Send + 'static> {
+        // --snip--
+        Box::new(|| ())
+    }
+
+    type Thunk = Box<dyn Fn() + Send + 'static>;
+
+    let f: Thunk = Box::new(|| println!("hi"));
+
+    fn takes_type_alias(f: Thunk) {
+        // --snip--
+    }
+
+    fn returns_type_alias() -> Thunk {
+        // --snip--
+        Box::new(|| ())
+    }
 }

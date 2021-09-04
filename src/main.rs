@@ -307,9 +307,9 @@ fn main() {
     print!("forever ");
 
     // loop has ! type but wouldn't be true if break is included
-    loop {
-        print!("and ever ");
-    }
+    // loop {
+    //     print!("and ever ");
+    // }
 
     // can't compile as rust needs to know size at compile time and str is a dynamically sized types
     // let s1: str = "Hello there!";
@@ -325,4 +325,29 @@ fn main() {
     fn generic_relax<T: ?Sized>(t: &T) {
         // --snip--
     }
+
+    fn add_one(x: i32) -> i32 {
+        x + 1
+    }
+
+    // function pointers implement all three of the closure traits (Fn, FnMut and FnOnce) so can be passed as an argument for a function that expects a closure
+    fn do_twice(f: fn(i32) -> i32, arg: i32) -> i32 {
+        f(arg) + f(arg)
+    }
+
+    let answer = do_twice(add_one, 5);
+
+    println!("The answer is: {}", answer);
+
+    let list_of_numbers = vec![1, 2, 3];
+    let list_of_strings: Vec<String> = list_of_numbers.iter().map(|i| i.to_string()).collect();
+    let list_of_strings_fn: Vec<String> = list_of_numbers.iter().map(ToString::to_string).collect();
+
+    enum Status {
+        Value(u32),
+        Stop,
+    }
+
+    // initializer syntax ()
+    let list_of_statuses: Vec<Status> = (0u32..20).map(Status::Value).collect();
 }

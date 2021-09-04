@@ -310,4 +310,19 @@ fn main() {
     loop {
         print!("and ever ");
     }
+
+    // can't compile as rust needs to know size at compile time and str is a dynamically sized types
+    // let s1: str = "Hello there!";
+    // let s2: str = "How's it going?";
+
+    // Trait is a dynamically sized type i.e. &dyn Trait, Box<dyn Trait>, Rc<dyn Trait>
+
+    fn generic<T>(t: T) { // fn generic<T: Sized>(t: T) {}
+        // -- snip--
+    }
+
+    // use ? to relax not to always have a known size at compile time
+    fn generic_relax<T: ?Sized>(t: &T) {
+        // --snip--
+    }
 }

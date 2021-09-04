@@ -350,4 +350,14 @@ fn main() {
 
     // initializer syntax ()
     let list_of_statuses: Vec<Status> = (0u32..20).map(Status::Value).collect();
+
+    // can't return closure as it's a trait
+    // fn returns_closure() -> dyn Fn(i32) -> i32 {
+    //     |x| x + 1
+    // }
+
+    // use a trait object
+    fn returns_closure() -> Box<dyn Fn(i32) -> i32> {
+        Box::new(|x| x + 1)
+    }
 }
